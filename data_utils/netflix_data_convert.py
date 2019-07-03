@@ -4,6 +4,7 @@ import random
 import sys
 import time
 import datetime
+from tqdm import tqdm
 
 
 def print_stats(data):
@@ -87,11 +88,11 @@ def main(args):
     folder = args[1]
     out_folder = args[2]
     # create necessary folders:
-    for output_dir in [(out_folder + f) for f in [
-        "/N3M_TRAIN", "/N3M_VALID", "/N3M_TEST", "/N6M_TRAIN",
-        "/N6M_VALID", "/N6M_TEST", "/N1Y_TRAIN", "/N1Y_VALID",
-        "/N1Y_TEST", "/NF_TRAIN", "/NF_VALID", "/NF_TEST"]]:
-        makedirs(output_dir, exist_ok=True)
+    # for output_dir in [(out_folder + f) for f in [
+    #     "/N3M_TRAIN", "/N3M_VALID", "/N3M_TEST", "/N6M_TRAIN",
+    #     "/N6M_VALID", "/N6M_TEST", "/N1Y_TRAIN", "/N1Y_VALID",
+    #     "/N1Y_TEST", "/NF_TRAIN", "/NF_VALID", "/NF_TEST"]]:
+    #     makedirs(output_dir, exist_ok=True)
 
     text_files = [path.join(folder, f)
                   for f in listdir(folder)
@@ -102,7 +103,7 @@ def main(args):
             print("Processing: {}".format(text_file))
             lines = f.readlines()
 
-            for line in lines:
+            for line in tqdm(lines):
                 if line[-2] == ':':
                     item = int(line[:-2])  # remove newline and :
                     if item not in item2id_map:
